@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+//@ts-ignore
 import imgWildernessMap from "../assets/wildy.png";
 import Legend from "./Legend";
 import Tile from "./Tile";
@@ -262,9 +263,11 @@ const tiles: TileProps[] = [
 function PathLine({
   fromTile,
   toTile,
+  active,
 }: {
   fromTile: TileProps;
   toTile: TileProps;
+  active: boolean;
 }) {
   const x1 = fromTile.x;
   const y1 = fromTile.y;
@@ -272,19 +275,26 @@ function PathLine({
   const y2 = toTile.y;
 
   return (
-    <line
-      x1={`${x1}%`}
-      y1={`${y1}%`}
-      x2={`${x2}%`}
-      y2={`${y2}%`}
-      stroke="rgba(255, 215, 0, 0.4)"
-      strokeWidth="2"
-      strokeDasharray="6,3"
-    />
+    <>
+      <line
+        x1={`${x1}%`}
+        y1={`${y1}%`}
+        x2={`${x2}%`}
+        y2={`${y2}%`}
+        stroke={active ? "green" : "rgba(255, 215, 0, 0.4)"}
+        strokeWidth={active ? "4" : "2.5"}
+        strokeDasharray="6,3"
+        style={{
+          transition: "stroke 0.25s ease-in-out",
+        }}
+      />
+    </>
   );
 }
 
 export function WildernessBoard() {
+  const [hoveredTileId, setHoveredTileId] = useState<number | null>(null);
+
   return (
     <div className="h-full w-full flex items-center justify-center">
       {/* <div className="min-h-screen flex items-center justify-center"> */}
@@ -307,6 +317,7 @@ export function WildernessBoard() {
               <PathLine
                 fromTile={tile}
                 toTile={tiles.find((t) => t.id === tile.id + 1) as TileProps}
+                active={hoveredTileId === tile.id}
               />
             </React.Fragment>
           ))}
@@ -315,9 +326,13 @@ export function WildernessBoard() {
         {/* Tiles */}
         <div className="relative w-full h-full z-10">
           {tiles.map((tile, index) => (
-            <React.Fragment key={tile.id}>
+            <div
+              key={tile.id}
+              onMouseEnter={() => setHoveredTileId(tile.id)}
+              onMouseLeave={() => setHoveredTileId(null)}
+            >
               <Tile tile={tile} tileNumber={tile.id} />
-            </React.Fragment>
+            </div>
           ))}
         </div>
 

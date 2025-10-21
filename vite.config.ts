@@ -1,10 +1,16 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react-swc";
+import tailwindcss from "@tailwindcss/postcss";
 import path from "path";
 
 export default defineConfig({
   base: "/WildyBingo/",
   plugins: [react()],
+  css: {
+    postcss: {
+      plugins: [tailwindcss],
+    },
+  },
   optimizeDeps: {
     // Bun handles dependencies efficiently, but we can optimize further
     include: ["react", "react-dom"],

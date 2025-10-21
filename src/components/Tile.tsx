@@ -32,7 +32,8 @@ const Tile = ({
 
   return (
     <div
-      className={`absolute ${getSizeClass()} ${getTypeColor()} rounded-xl border-2 border-yellow-500/80 shadow-xl flex flex-col items-center justify-center p-1 transform -translate-x-1/2 -translate-y-1/2 hover:scale-125 transition-transform cursor-pointer group`}
+      className={`absolute ${getSizeClass()} ${getTypeColor()} rounded-xl border-2 border-yellow-500/80 shadow-xl flex flex-col items-center justify-center p-1
+    -translate-x-1/2 -translate-y-1/2 transform-gpu transition-transform hover:scale-125 cursor-pointer group`}
       style={{ left: `${tile.x}%`, top: `${tile.y}%` }}
     >
       {/* Tile Number */}
