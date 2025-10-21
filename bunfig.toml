@@ -1,0 +1,24 @@
+[install]
+# Use Bun's built-in bundler for faster installs
+cache = true
+# Automatically install peer dependencies
+auto = true
+# Use exact versions for better reproducibility
+exact = false
+
+[install.scopes]
+# Configure scopes if needed for private packages
+
+[run]
+# Enable Bun's native bundler for development
+bun = true
+# Enable file watching for better HMR
+watch = true
+
+[test]
+# Configure test settings if needed
+preload = ["./src/test-setup.ts"]
+
+[install.lockfile]
+# Use Bun's binary lockfile format
+save = true
