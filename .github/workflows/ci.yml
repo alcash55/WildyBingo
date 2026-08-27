@@ -1,0 +1,22 @@
+name: CI
+
+# Gates deploy.yml: that workflow builds and pushes straight to GitHub Pages
+# on every push to main with nothing checking the build first. This repo has
+# no lint or typecheck tooling configured yet (no tsconfig.json, no ESLint
+# config) and no test script, so this calls the shared reusable workflow's
+# install + build steps only -- lint/typecheck/test are skipped there
+# automatically since the scripts don't exist. That's still real coverage:
+# a build failure here now fails a PR instead of failing silently on main
+# after deploy.yml already tried to publish it.
+on:
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  ci:
+    uses: alcash55/ac-composite-actions/.github/workflows/node-ci.yml@main
+    with:
+      PACKAGE_MANAGER: bun
