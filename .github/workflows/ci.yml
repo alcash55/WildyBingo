@@ -12,6 +12,16 @@ on:
   pull_request:
   workflow_call:
 
+# github.ref stays constant across pushes to the same PR (refs/pull/<n>/merge),
+# so this cancels a superseded run exactly like keying on the PR number would.
+# github.event.pull_request.number was tried first and failed GitHub's workflow
+# validation outright (zero jobs scheduled, no annotation) on this repo despite
+# being the pattern GitHub's own docs show -- switched to github.ref rather than
+# spend more time on an unexplained platform rejection of a one-line expression.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
