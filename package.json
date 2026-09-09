@@ -58,7 +58,6 @@
           "dev": "bun run vite",
           "build": "bun run vite build",
           "preview": "bun run vite preview",
-          "install": "bun install",
           "start": "bun run dev"
       },
       "packageManager": "bun@1.0.0"
