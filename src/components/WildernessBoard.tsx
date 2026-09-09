@@ -3,9 +3,10 @@ import React, { useState } from "react";
 import imgWildernessMap from "../assets/wildy.png";
 import Legend from "./Legend";
 import Tile from "./Tile";
+import ChallengeList from "./ChallengeList";
 import { TileProps } from "../types/types";
 
-const tiles: TileProps[] = [
+export const tiles: TileProps[] = [
   {
     id: 1,
     x: 80,
@@ -296,10 +297,18 @@ export function WildernessBoard() {
   const [hoveredTileId, setHoveredTileId] = useState<number | null>(null);
 
   return (
-    <div className="h-full w-full flex items-center justify-center">
-      {/* <div className="min-h-screen flex items-center justify-center"> */}
+    <div className="w-full flex-1 flex items-center justify-center p-4">
+      {/* Below md the wilderness map can't shrink tiles far enough to stay
+          legible without their text overlapping (see issue #3), so narrow
+          viewports get a plain list of the same 31 challenges instead. */}
+      <ChallengeList className="md:hidden w-full max-w-md" />
 
-      <div className="relative w-full max-w-5xl aspect-[3/4] bg-black rounded-2xl shadow-2xl overflow-hidden border-4 border-yellow-600/50">
+      <div
+        // @container: tile sizes in Tile.tsx are set in cqw, a percentage of
+        // *this* element's rendered width, so they track the board's actual
+        // size instead of the viewport's.
+        className="hidden md:block @container relative w-full max-w-5xl aspect-[3/4] bg-black rounded-2xl shadow-2xl overflow-hidden border-4 border-yellow-600/50"
+      >
         {/* Wilderness Map Background */}
         <img
           src={imgWildernessMap}
@@ -325,13 +334,18 @@ export function WildernessBoard() {
 
         {/* Tiles */}
         <div className="relative w-full h-full z-10">
-          {tiles.map((tile, index) => (
+          {tiles.map((tile) => (
             <div
               key={tile.id}
               onMouseEnter={() => setHoveredTileId(tile.id)}
               onMouseLeave={() => setHoveredTileId(null)}
             >
-              <Tile tile={tile} tileNumber={tile.id} />
+              <Tile
+                tile={tile}
+                tileNumber={tile.id}
+                onFocus={() => setHoveredTileId(tile.id)}
+                onBlur={() => setHoveredTileId(null)}
+              />
             </div>
           ))}
         </div>
