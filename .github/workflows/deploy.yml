@@ -30,7 +30,7 @@ jobs:
 
         # https://bun.sh/docs/cli/install#ci-cd
       - name: Intall Bun
-        uses: oven-sh/setup-bun@v1
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies & build
         run: |
